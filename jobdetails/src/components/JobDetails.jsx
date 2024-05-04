@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getJobDetails } from '../fetchdata/getJobDetails'
 import DropDown from './DropDown'
 import Search from './Search'
@@ -10,31 +10,51 @@ const locationMenuItems = ['delhi ncr', 'mumbai', 'chennai', 'bangalore', 'hyder
 const expMenuItems = ['0','1','2','3','4','5','6','7','8','9','>9'];
 
 const JobDetails = () => {
-  const [jobDetails, setJobDetails] = useState();
+  const [jobDetails, setJobDetails] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
-  const [filteredDetails, setFilteredDetails] = useState();
+  const [filteredDetails, setFilteredDetails] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
   const [location, setLocation]= useState();
   const [minExp, setMinExp] = useState();
   const [salary,setSalary] = useState();
   const [company,setCompany] = useState();
+  const lastElementRef = useRef(null);
+  
+  const observerCallBack = (entries)=>{
+    const firstEntry = entries[0];
+    if(firstEntry.isIntersecting && hasMore){
+      fetchJobDetails();
+    }
+  }
   useEffect(() => {
-    fetchJobDetails();
-  }, [])
+    const observer =  new IntersectionObserver(observerCallBack);
+    if(observer && lastElementRef.current){
+      observer.observe(lastElementRef.current);
+    }
+    return ()=>{
+      if(observer){
+        observer.disconnect();
+      }
+    }
+  }, [jobDetails])
+
   const fetchJobDetails = async () => {
     const details = await getJobDetails(offset);
     if (details) {
-      console.log('!@#$% details',details);
-      setJobDetails([...details.jdList ]);
-      if(!filteredDetails){
-        setFilteredDetails([...details.jdList ]);
+      if(details.jdList.length===0){
+        setHasMore(false);
+      }else{
+        setJobDetails((prev)=>[...prev,...details.jdList ]);
+        setOffset((val) => val + 50);
+        if(filteredDetails.length===0){
+          setFilteredDetails([...details.jdList ]);
+        }
       }
-      setOffset((val) => val + 10);
     } else {
-      setJobDetails({});
+      setJobDetails([]);
     }
   }
-  console.log('!@#$ job', jobDetails)
   const handleRoleValue = (event) => {
     setSelectedRole(event.target.value);
   }
@@ -51,6 +71,7 @@ const JobDetails = () => {
     setCompany(event.target.value);
   }
   return (
+    <div>
     <div className='flex flex-col gap-4'>
       <div className='flex flex-wrap justify-center items-center gap-4'>
         <div className='w-[15rem]'>
@@ -89,7 +110,7 @@ const JobDetails = () => {
         />
       </div>
       <div className='flex flex-col gap-6 md:flex-row flex-wrap justify-center items-center'>
-        {filteredDetails?.map((jobDetails,index)=>{
+        {jobDetails?.map((jobDetails,index)=>{
           return(
             <Card
             jobDetails={jobDetails}
@@ -98,6 +119,8 @@ const JobDetails = () => {
           )
         })}
       </div>
+    </div>
+    {hasMore && <div ref={lastElementRef}>Loading .......</div>}
     </div>
   )
 }
