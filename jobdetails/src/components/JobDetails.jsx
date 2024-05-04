@@ -78,7 +78,7 @@ const JobDetails = () => {
         />
         </div>
         <Search
-        placeholder={'Min Salary in '}
+        placeholder={'Min Salary in USD'}
         inputValue={salary}
         handleInputValue={handleSalaryValue}
         />

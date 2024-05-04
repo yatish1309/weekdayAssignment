@@ -20,8 +20,9 @@ body{
   padding: 10px;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.job-description {
+  max-height: 150px; /* Limit the height to show only certain number of characters */
+  overflow: hidden; /* Hide the overflow */
+  transition: max-height 0.3s ease; /* Add smooth transition */
 }
+

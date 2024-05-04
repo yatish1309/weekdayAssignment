@@ -9,7 +9,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div>
+        {children}
+        </div>
+      <div id='modal-root' className=""></div>
+      </body>
     </html>
   );
 }
