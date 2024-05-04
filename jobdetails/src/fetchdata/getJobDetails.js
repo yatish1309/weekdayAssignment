@@ -1,11 +1,11 @@
 
-export const getJobDetails = async() => {
+export const getJobDetails = async(offset) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
   const body = JSON.stringify({
     "limit": 10,
-    "offset": 0
+    "offset": offset
   });
 
   const requestOptions = {
