@@ -19,7 +19,6 @@ export const getJobDetails = async(offset) => {
     .then((response) => response.text())
     .then((result)=>{responseData=result})
     .catch((error) => {errorData=error});
-  console.log('!@#$ Response', responseData);
   return errorData?null:JSON.parse(responseData);
 }
 

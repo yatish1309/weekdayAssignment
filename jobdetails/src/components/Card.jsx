@@ -55,17 +55,17 @@ const Card = ({ jobDetails }) => {
         <span>{jobDetails?.minExp ? `${jobDetails.minExp} years` : '0 years'}</span>
       </div>
       <button className='bg-green-700 w-full px-10 py-4 cursor-pointer text-white' onClick={handleApplyClick}>Apply</button>
-        <PortalComp
-          show={showPortal}
-          onClick={handlePortalClick}
-        >
-          <div className='bg-white w-3/4 p-4 flex flex-col gap-4 h-3/4 overflow-scroll' onClick={(e) => e.stopPropagation()}>
-            <span className='text-black text-xl font-bold '>Job Description</span>
-            <span className='text-black text-base font-medium'>
+      <PortalComp
+        show={showPortal}
+        onClick={handlePortalClick}
+      >
+        <div className='bg-white w-3/4 p-4 flex flex-col gap-4 h-3/4 overflow-scroll' onClick={(e) => e.stopPropagation()}>
+          <span className='text-black text-xl font-bold '>Job Description</span>
+          <span className='text-black text-base font-medium'>
             {jobDetails?.jobDetailsFromCompany}
-            </span>
-          </div>
-        </PortalComp>
+          </span>
+        </div>
+      </PortalComp>
     </div>
   )
 }

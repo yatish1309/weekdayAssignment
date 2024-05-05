@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom';
 
 const DELAY = 200;
-const isServer = ()=>{
-  if(typeof window !==undefined)return false;
+const isServer = () => {
+  if (typeof window !== undefined) return false;
   return true;
 }
 const useDelayUmount = (isMounted, delayTime) => {
@@ -26,10 +26,10 @@ const PortalComp = ({ show, onClick, children }) => {
     <div onClick={onClick}
       className='w-full h-full bg-black fixed top-0 bg-opacity-70 flex justify-center items-center'
     >
-        {children}
+      {children}
     </div>
   ) : null;
-  if(isServer())return null;
+  if (isServer()) return null;
   return createPortal(
     portal,
     document.getElementById('modal-root')
