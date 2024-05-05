@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useRouter } from 'next/navigation'
+
+//This portal is used for the popup/overlay
 import PortalComp from './Portal/Portal'
 
 

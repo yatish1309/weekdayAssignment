@@ -1,10 +1,14 @@
 'use client'
+
+// This is the main file
 import React, { useEffect, useRef, useState } from 'react'
 import { getJobDetails } from '../fetchdata/getJobDetails'
 import DropDown from './DropDown'
 import Search from './Search'
 import Card from './Card'
 import Loader from './Loaders/Loader';
+
+//Custom hook implemented for debouncing
 import { useDebounce } from '../hooks/useDebounce'
 
 
@@ -24,12 +28,14 @@ const JobDetails = () => {
   const [company, setCompany] = useState();
   const [filter, setFilter] = useState(false);
   const lastElementRef = useRef(null);
+  // Used debouncing for salary and company search
   const salaryDebounce = useDebounce(salary);
   const companyDebounce = useDebounce(company);
 
   const observerCallBack = (entries) => {
     const firstEntry = entries[0];
     if (firstEntry.isIntersecting && hasMore) {
+      //function used to fetch job details
       fetchJobDetails();
     }
   }
@@ -52,6 +58,7 @@ const JobDetails = () => {
     }
   }, [selectedRole, location, minExp, filter, salaryDebounce, companyDebounce,])
 
+  //This function calls the api asynchronously
   const fetchJobDetails = async () => {
     const details = await getJobDetails(offset);
     if (details) {
@@ -66,6 +73,8 @@ const JobDetails = () => {
       setJobDetails([]);
     }
   }
+
+  // This function filters the job details based on the user entries on the UI
 
   const filterJobDetails = () => {
     const filtArray = jobDetails.filter((job) => {
@@ -100,6 +109,8 @@ const JobDetails = () => {
     setFilteredDetails([...filteredArray]);
     setFilter(false);
   }
+
+  // Following functions are the handlers for the respective states
 
   const handleRoleValue = (event) => {
     setSelectedRole(event.target.value);
